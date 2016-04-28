@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_file.ui'
 #
-# Created: Thu Apr 28 23:02:57 2016
+# Created: Thu Apr 28 23:15:22 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -68,15 +68,33 @@ class Ui_Dialog(object):
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout_2.addWidget(self.label_2, 0, 0, 1, 1)
         self.sms_button = QtGui.QPushButton(self.tab_2)
-        self.sms_button.setGeometry(QtCore.QRect(170, 200, 71, 27))
+        self.sms_button.setGeometry(QtCore.QRect(260, 200, 71, 27))
         self.sms_button.setObjectName(_fromUtf8("sms_button"))
         self.sms_text = QtGui.QTextEdit(self.tab_2)
         self.sms_text.setGeometry(QtCore.QRect(80, 100, 251, 78))
         self.sms_text.setObjectName(_fromUtf8("sms_text"))
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
+        self.tab_3 = QtGui.QWidget()
+        self.tab_3.setObjectName(_fromUtf8("tab_3"))
+        self.horizontalLayoutWidget = QtGui.QWidget(self.tab_3)
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(90, 70, 221, 80))
+        self.horizontalLayoutWidget.setObjectName(_fromUtf8("horizontalLayoutWidget"))
+        self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout.setMargin(0)
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.label_3 = QtGui.QLabel(self.horizontalLayoutWidget)
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.horizontalLayout.addWidget(self.label_3)
+        self.settings_port = QtGui.QLineEdit(self.horizontalLayoutWidget)
+        self.settings_port.setObjectName(_fromUtf8("settings_port"))
+        self.horizontalLayout.addWidget(self.settings_port)
+        self.settings_okButton = QtGui.QPushButton(self.tab_3)
+        self.settings_okButton.setGeometry(QtCore.QRect(260, 170, 51, 27))
+        self.settings_okButton.setObjectName(_fromUtf8("settings_okButton"))
+        self.tabWidget.addTab(self.tab_3, _fromUtf8(""))
 
         self.retranslateUi(Dialog)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -88,4 +106,7 @@ class Ui_Dialog(object):
         self.label_2.setText(_translate("Dialog", "Number", None))
         self.sms_button.setText(_translate("Dialog", "Send", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Dialog", "SMS", None))
+        self.label_3.setText(_translate("Dialog", "PORT:", None))
+        self.settings_okButton.setText(_translate("Dialog", "Ok", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("Dialog", "Port", None))
 

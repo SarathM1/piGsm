@@ -4,7 +4,7 @@ import sys
 import time
 import serial
 
-PORT = '/dev/ttyUSB0'
+PORT = '/dev/ttyUSB0'       # Default value
 
 
 class VoiceCall:
@@ -62,11 +62,18 @@ class Gui(QtGui.QMainWindow):
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.ui.tabWidget.setCurrentIndex(2)
+        self.port = PORT
+        self.ui.settings_okButton.pressed.connect(self.updatePort)
         self.ui.call_attendButton.pressed.connect(self.makeCall)
         self.ui.call_endButton.pressed.connect(self.endCall)
         self.ui.sms_button.pressed.connect(self.sendSms)
-        self.call = VoiceCall(PORT)
-        self.sms = TextMessage(PORT)
+        self.call = VoiceCall(self.port)
+        self.sms = TextMessage(self.port)
+
+    def updatePort(self):
+        self.port = str(self.ui.settings_port.text())
+        print "Port updated to: ", self.port
 
     def sendSms(self):
         try:
