@@ -44,7 +44,11 @@ class Worker(QThread):
 
     def __init__(self, port, parent=None):
         self.port = port
-        self.ser = serial.Serial(self.port)
+        try:
+            self.ser = serial.Serial(self.port)
+        except serial.SerialException, e:
+            print e
+
         QThread.__init__(self, parent)
         self.stop.connect(self.quitThread)
 
@@ -54,8 +58,21 @@ class Worker(QThread):
 
     def run(self):
         while(1):
-            x = self.ser.readline()
-            print(x)
+            try:
+                x = self.ser.readline()
+            except serial.SerialException, e:
+                x = None
+                print e
+                time.sleep(1)
+
+            except AttributeError, e:
+                x = None
+                print e
+                time.sleep(1)
+
+            if x:
+                print "Data from Modem: ", x
+
             if (x == b'RING\r\n'):
                 self.signal.emit()
 
@@ -95,28 +112,36 @@ class Gui(QtGui.QMainWindow):
         self.ui.incoming_reject.pressed.connect(self.rejectCall)
         self.call = VoiceCall(self.port)
         self.sms = TextMessage(self.port)
-        self.thread = Worker()
+        self.thread = Worker(self.port)
         self.thread.signal.connect(self.recvCall)
         self.thread.start()
 
     def answerCall(self):
-        self.ser.write("ATA\r\n")
-        print "Attending Call"
-        time.sleep(2)
-        self.ui.incoming_warn.clear()
+        try:
+            ser = serial.Serial(self.port)
+            ser.write("ATA\r\n")
+            print "Attending Call"
+            time.sleep(2)
+            self.ui.incoming_warn.clear()
+        except Exception, e:
+            print "Exception in answerCall: ", e
 
     def rejectCall(self):
-        self.ser.write("ATH\r\n")
-        print "Reject Call"
-        time.sleep(2)
-        self.ui.incoming_warn.clear()
+        try:
+            ser = serial.Serial(self.port)
+            ser.write("ATH\r\n")
+            print "Reject Call"
+            time.sleep(2)
+            self.ui.incoming_warn.clear()
+        except Exception, e:
+            print "Exception in answerCall: ", e
 
     def updatePort(self):
         self.port = str(self.ui.settings_port.text())
         print "Port updated to: ", self.port
 
     def recvCall(self):
-        self.ui.tabWidget.currentIndex(1)
+        self.ui.tabWidget.setCurrentIndex(1)
         self.ui.incoming_warn.setText("Incoming Call")
 
     def sendSms(self):
