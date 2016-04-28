@@ -1,4 +1,5 @@
-from PyQt4 import QtGui  # , QtCore
+from PyQt4 import QtGui
+from PyQt4.QtCore import QThread, pyqtSignal
 from py_file import Ui_Dialog
 import sys
 import time
@@ -37,6 +38,28 @@ class VoiceCall:
         time.sleep(1)
 
 
+class Worker(QThread):
+    signal = pyqtSignal()
+    stop = pyqtSignal()
+
+    def __init__(self, port, parent=None):
+        self.port = port
+        self.ser = serial.Serial(self.port)
+        QThread.__init__(self, parent)
+        self.stop.connect(self.quitThread)
+
+    def quitThread(self):
+        print "Thread Terminating"
+        self.terminate()
+
+    def run(self):
+        while(1):
+            x = self.ser.readline()
+            print(x)
+            if (x == b'RING\r\n'):
+                self.signal.emit()
+
+
 class TextMessage:
     def __init__(self, port):
         self.port = port
@@ -62,18 +85,39 @@ class Gui(QtGui.QMainWindow):
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.ui.tabWidget.setCurrentIndex(2)
+        self.ui.tabWidget.setCurrentIndex(3)
         self.port = PORT
         self.ui.settings_okButton.pressed.connect(self.updatePort)
         self.ui.call_attendButton.pressed.connect(self.makeCall)
         self.ui.call_endButton.pressed.connect(self.endCall)
         self.ui.sms_button.pressed.connect(self.sendSms)
+        self.ui.incoming_answer.pressed.connect(self.answerCall)
+        self.ui.incoming_reject.pressed.connect(self.rejectCall)
         self.call = VoiceCall(self.port)
         self.sms = TextMessage(self.port)
+        self.thread = Worker()
+        self.thread.signal.connect(self.recvCall)
+        self.thread.start()
+
+    def answerCall(self):
+        self.ser.write("ATA\r\n")
+        print "Attending Call"
+        time.sleep(2)
+        self.ui.incoming_warn.clear()
+
+    def rejectCall(self):
+        self.ser.write("ATH\r\n")
+        print "Reject Call"
+        time.sleep(2)
+        self.ui.incoming_warn.clear()
 
     def updatePort(self):
         self.port = str(self.ui.settings_port.text())
         print "Port updated to: ", self.port
+
+    def recvCall(self):
+        self.ui.tabWidget.currentIndex(1)
+        self.ui.incoming_warn.setText("Incoming Call")
 
     def sendSms(self):
         try:
@@ -100,11 +144,15 @@ class Gui(QtGui.QMainWindow):
     def endCall(self):
         self.call.endCall()
 
+    def closeSocket(self):
+        self.thread.stop.emit()
+        self.thread.wait()
+
 
 def main():
     app = QtGui.QApplication(sys.argv)
     ex = Gui()
-    # app.aboutToQuit.connect(ex.flags.closeSocket)
+    app.aboutToQuit.connect(ex.closeSocket)
     ex.show()
     sys.exit(app.exec_())
 
