@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_file.ui'
 #
-# Created: Thu Apr 28 23:15:22 2016
+# Created: Fri Apr 29 00:38:41 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -52,6 +52,22 @@ class Ui_Dialog(object):
         self.call_endButton.setGeometry(QtCore.QRect(190, 160, 85, 27))
         self.call_endButton.setObjectName(_fromUtf8("call_endButton"))
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
+        self.tab_4 = QtGui.QWidget()
+        self.tab_4.setObjectName(_fromUtf8("tab_4"))
+        self.label_4 = QtGui.QLabel(self.tab_4)
+        self.label_4.setGeometry(QtCore.QRect(90, 70, 56, 17))
+        self.label_4.setText(_fromUtf8(""))
+        self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.incoming_warn = QtGui.QLineEdit(self.tab_4)
+        self.incoming_warn.setGeometry(QtCore.QRect(90, 70, 201, 27))
+        self.incoming_warn.setObjectName(_fromUtf8("incoming_warn"))
+        self.incoming_answer = QtGui.QPushButton(self.tab_4)
+        self.incoming_answer.setGeometry(QtCore.QRect(100, 140, 85, 27))
+        self.incoming_answer.setObjectName(_fromUtf8("incoming_answer"))
+        self.incoming_reject = QtGui.QPushButton(self.tab_4)
+        self.incoming_reject.setGeometry(QtCore.QRect(210, 140, 81, 27))
+        self.incoming_reject.setObjectName(_fromUtf8("incoming_reject"))
+        self.tabWidget.addTab(self.tab_4, _fromUtf8(""))
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
         self.gridLayoutWidget_2 = QtGui.QWidget(self.tab_2)
@@ -94,7 +110,7 @@ class Ui_Dialog(object):
         self.tabWidget.addTab(self.tab_3, _fromUtf8(""))
 
         self.retranslateUi(Dialog)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -103,6 +119,9 @@ class Ui_Dialog(object):
         self.call_attendButton.setText(_translate("Dialog", "Call", None))
         self.call_endButton.setText(_translate("Dialog", "End", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("Dialog", "Call", None))
+        self.incoming_answer.setText(_translate("Dialog", "Answer", None))
+        self.incoming_reject.setText(_translate("Dialog", "Reject", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("Dialog", "Incoming Call", None))
         self.label_2.setText(_translate("Dialog", "Number", None))
         self.sms_button.setText(_translate("Dialog", "Send", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Dialog", "SMS", None))
