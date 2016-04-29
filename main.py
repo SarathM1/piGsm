@@ -146,7 +146,7 @@ class Gui(QtGui.QMainWindow):
 
     def sendSms(self):
         try:
-            number = self.ui.call_number.text()
+            number = self.ui.sms_number.text()
             number = str(number)
             text = self.ui.sms_text.toPlainText()
             self.sms.sendMessage(text, number)
