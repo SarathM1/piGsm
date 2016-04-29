@@ -149,7 +149,9 @@ class Gui(QtGui.QMainWindow):
             number = self.ui.sms_number.text()
             number = str(number)
             text = self.ui.sms_text.toPlainText()
+            text = str(text)
             self.sms.sendMessage(text, number)
+            self.ui.sms_text.clear()
 
         except Exception, e:
             self.ui.call_number.clear()
